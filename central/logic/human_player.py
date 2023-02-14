@@ -3,6 +3,6 @@ import chess
 class HumanPlayer:
     def __init__(self):
         pass
-    def make_move(self, board, move):
-        board.push_san(move)
+    def make_move(self, board, humanMove):
+        board.push_san(humanMove)
         print(board)
