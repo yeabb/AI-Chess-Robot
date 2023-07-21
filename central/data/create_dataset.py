@@ -1,5 +1,11 @@
+import os
+import sys
+sys.path.append("/Users/yab/Desktop/projects/AI-Chess-Robot/central/vision")
 import cv2
 import numpy as np
+from img_processing import ImageProcessing
+
+
 
 def color_percentage(image, color_spectrum):
     
@@ -45,10 +51,46 @@ def detect_color(image):
 
     return orange_percentage, green_percentage, neither_percentage
 
-# Example usage:
-image_path = "/Users/yab/Desktop/projects/yolo/corner/check6.jpg"
-image = cv2.imread(image_path)
-orange_percent, green_percent, neither_percent = detect_color(image)
-print("Orange percentage:", orange_percent)
-print("Green percentage:", green_percent)
-print("Neither (Other) percentage:", neither_percent)
+processedImage=ImageProcessing()
+x_train, y_train= [], []
+folderPath = "/Users/yab/Desktop/projects/AI-Chess-Robot/raw/1"
+for i in range(1):
+    subFolder = os.path.join(folderPath, str(i))
+    fileList = os.listdir(subFolder)
+    imageFiles = [file for file in fileList if file.endswith(('.jpg'))]
+    for imageFile in imageFiles:
+        imagePath = os.path.join(folderPath, imageFile)
+        image = cv2.imread(imagePath)
+        coords = processedImage.find_coordinates(image)
+        print(coords)
+        
+        # orangePercent, greenPercent, neitherPercent = detect_color(image)
+        # x_train.append([orangePercent, greenPercent, neitherPercent])
+        # # catagory = folderPath
+        # y_train.append(catagory)
+        
+        
+        
+
+
+
+
+
+# for imageFile in imageFiles:
+#     imagePath = os.path.join(folderPath, imageFile)
+#     image = cv2.imread(imagePath)
+#     orangePercent, greenPercent, neitherPercent = detect_color(image)
+#     x_train.append([orangePercent, greenPercent, neitherPercent])
+#     catagory = folderPath
+#     y_train.append(catagory)
+
+# print(x_train, y_train)
+    
+
+
+# image_path = "/Users/yab/Desktop/projects/yolo/corner/check6.jpg"
+# image = cv2.imread(image_path)
+# orange_percent, green_percent, neither_percent = detect_color(image)
+# print("Orange percentage:", orange_percent)
+# print("Green percentage:", green_percent)
+# print("Neither (Other) percentage:", neither_percent)

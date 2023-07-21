@@ -3,9 +3,9 @@ import numpy as np
 import itertools
 
 class ImageProcessing:
-    def __init__(self):
-        self.img=cv.imread("/Users/yab/Desktop/projects/yolo/corner/contours.jpeg")
-        # self.img=img
+    def __init__(self, img):
+        # self.img=cv.imread("/Users/yab/Desktop/projects/yolo/corner/contours.jpeg")
+        self.img=img
         self.gray = cv.cvtColor(self.img, cv.COLOR_RGB2GRAY)
         
     def find_intersections(self, lines, image):
@@ -68,22 +68,22 @@ class ImageProcessing:
         pts = self.remove_duplicates(pts)
         pts.sort()
         pts=list(pts for pts,_ in itertools.groupby(pts))
-        ptsOrder=[]
-        row=0
-        for i in range(9):
-            n=i
-            temp=[]
-            for j in range(9):
-                temp.append(pts[n])
-                n+=9
-            ptsOrder.append(temp)
-            row+=1
+        # ptsOrder=[]
+        # row=0
+        # for i in range(9):
+        #     n=i
+        #     temp=[]
+        #     for j in range(9):
+        #         temp.append(pts[n])
+        #         n+=9
+        #     ptsOrder.append(temp)
+        #     row+=1
         
         
-        return ptsOrder
+        # return ptsOrder
     
     def showBoardStatus(self):
-        coords=self.coords()
+        coords=self.find_coordinates()
         for row in coords:
             for pt in row:
                 cv.circle(self.img, (int(pt[1]), int(pt[0])), 3, (0,255,0), 3)
@@ -96,7 +96,8 @@ class ImageProcessing:
     #     imageCopy = self.img.copy()
     #     return imageCopy
         
-# img=cv.imread("/Users/yab/Desktop/projects/yolo/corner/contours.jpeg")
-# x=ImageProcessing()
-# y=x.find_coordinates()
+img=cv.imread("/Users/yab/Desktop/projects/yolo/corner/1481228945.jpg")
+x=ImageProcessing(img)
+y=x.find_coordinates()
+x.showBoardStatus()
 # print(y)
