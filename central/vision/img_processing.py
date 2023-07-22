@@ -2,12 +2,17 @@ import cv2 as cv
 import numpy as np
 import itertools
 
+
 class ImageProcessing:
     def __init__(self, img):
         # self.img=cv.imread("/Users/yab/Desktop/projects/yolo/corner/contours.jpeg")
-        self.img=img
+        self.img1=img
+        self.img = self.add_margin()
         self.gray = cv.cvtColor(self.img, cv.COLOR_RGB2GRAY)
-        
+    
+    def add_margin(self):
+        borderoutput = cv.copyMakeBorder(self.img1, 20, 20, 20, 20, cv.BORDER_CONSTANT, value=(255, 255, 255))
+        return borderoutput
     def find_intersections(self, lines, image):
         new_lines_v = []
         new_lines_h = []
@@ -39,7 +44,7 @@ class ImageProcessing:
         l = len(list)
         for i in range(l):
             c = True
-            if all(self.dist(list[i], p) > 100 for p in out):
+            if all(self.dist(list[i], p) > 50 for p in out):
                 out.append(list[i])
         return out
     
@@ -68,19 +73,19 @@ class ImageProcessing:
         pts = self.remove_duplicates(pts)
         pts.sort()
         pts=list(pts for pts,_ in itertools.groupby(pts))
-        # ptsOrder=[]
-        # row=0
-        # for i in range(9):
-        #     n=i
-        #     temp=[]
-        #     for j in range(9):
-        #         temp.append(pts[n])
-        #         n+=9
-        #     ptsOrder.append(temp)
-        #     row+=1
+        ptsOrder=[]
+        row=0
+        for i in range(9):
+            n=i
+            temp=[]
+            for j in range(9):
+                temp.append(pts[n])
+                n+=9
+            ptsOrder.append(temp)
+            row+=1
         
         
-        # return ptsOrder
+        return ptsOrder
     
     def showBoardStatus(self):
         coords=self.find_coordinates()
