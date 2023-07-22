@@ -8,7 +8,7 @@ class BoardSquares:
     def __init__(self):
         pass
 
-    def squareCoords(self): #defining a matrix that reprsents the coords of each squares
+    def squareCoordsPerRow(self): #defining a matrix that reprsents the coords of each squares per row
         square_coords=[]
         coords=self.coords()
         for i in range(8):
@@ -44,7 +44,7 @@ class BoardSquares:
     
     #map each square names with it's coord values, 
     def squaresToCoordsMap(self):
-        square_coords,fileAndRank=self.squareCoords(), self.fileAndRank()
+        square_coords,fileAndRank=self.squareCoordsPerRow(), self.fileAndRank()
         squareCoordsMap={}
         for i in range(8):
             for j in range(8):
@@ -54,7 +54,7 @@ class BoardSquares:
     
     #map coord value of each square with it's square name
     def coordsTosquaresMap(self):
-        square_coords,fileAndRank=self.squareCoords()
+        square_coords, fileAndRank=self.squareCoordsPerRow(), self.fileAndRank()
         coordsSquareMap={}
         for i in range(8):
             for j in range(8):

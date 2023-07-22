@@ -51,6 +51,22 @@ def detect_color(image):
 
     return orange_percentage, green_percentage, neither_percentage
 
+
+def crop_image(image, pts):
+    
+    pts = np.array(pts, dtype=np.float32)
+
+    # Get the bounding rectangle of the region defined by the points
+    x, y, w, h = cv.boundingRect(pts)
+
+    # Crop the image using the bounding rectangle
+    cropped_img = image[y:y+h, x:x+w]
+
+    return cropped_img
+
+
+
+
 processedImage=ImageProcessing()
 x_train, y_train= [], []
 folderPath = "/Users/yab/Desktop/projects/AI-Chess-Robot/raw/1"
@@ -61,30 +77,23 @@ for i in range(1):
     for imageFile in imageFiles:
         imagePath = os.path.join(subFolder, imageFile)
         image = cv.imread(imagePath, cv.IMREAD_COLOR)
-        coords = processedImage.find_coordinates(image)
-        print(coords)
-        
-        # orangePercent, greenPercent, neitherPercent = detect_color(image)
-        # x_train.append([orangePercent, greenPercent, neitherPercent])
-        # # catagory = folderPath
-        # y_train.append(catagory)
+        paddedImage = processedImage.add_margin(image)
+        coords = processedImage.squareCoords(image)
         
         
+        for pts in coords:
+            
+            croppedImage = crop_image(paddedImage, pts)
+            # cv.imshow('Cropped Image', croppedImage)
+            # cv.waitKey(2000)
+            # cv.destroyAllWindows()
+            orangePercent, greenPercent, neitherPercent = detect_color(croppedImage)
+            x_train.append([orangePercent, greenPercent, neitherPercent])
+            # catagory = folderPath
+            # y_train.append(catagory)
+         
+    
         
-
-
-
-
-
-# for imageFile in imageFiles:
-#     imagePath = os.path.join(folderPath, imageFile)
-#     image = cv2.imread(imagePath)
-#     orangePercent, greenPercent, neitherPercent = detect_color(image)
-#     x_train.append([orangePercent, greenPercent, neitherPercent])
-#     catagory = folderPath
-#     y_train.append(catagory)
-
-# print(x_train, y_train)
     
 
 

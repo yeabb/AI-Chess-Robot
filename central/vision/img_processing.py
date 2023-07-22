@@ -71,9 +71,7 @@ class ImageProcessing:
         cv.drawContours(self.img, [a[-1][1]], 0, (0, 0, 255), 23)
          
          
-    def find_coordinates(self, image):
-        img = self.add_margin(image)
-        grayImg = cv.cvtColor(img, cv.COLOR_RGB2GRAY)
+    def find_coordinates(self, grayImg):
         lines=self.find_lines(grayImg)
         pts, image = self.find_intersections(lines, grayImg)
         pts = self.remove_duplicates(pts)
@@ -92,6 +90,21 @@ class ImageProcessing:
         
         
         return ptsOrder
+    
+    
+    def squareCoords(self, image): #defining a matrix that reprsents the coords of each squares
+        img = self.add_margin(image)
+        grayImg = cv.cvtColor(img, cv.COLOR_RGB2GRAY)
+        square_coords = []
+        coords = self.find_coordinates(grayImg)
+        for i in range(8):
+            for j in range(8):
+                first_coord, second_coord = coords[i][j], coords[i][j+1]
+                third_coord, fourth_coord = coords[i+1][j], coords[i+1][j+1]     
+                square_coords.append([first_coord, second_coord, third_coord, fourth_coord])
+        
+        return square_coords
+    
     
     def showBoardStatus(self, image):
         img = self.add_margin(image)
