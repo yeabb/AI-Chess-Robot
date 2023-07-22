@@ -1,7 +1,7 @@
 import os
 import sys
 sys.path.append("/Users/yab/Desktop/projects/AI-Chess-Robot/central/vision")
-import cv2
+import cv2 as cv
 import numpy as np
 from img_processing import ImageProcessing
 
@@ -10,14 +10,14 @@ from img_processing import ImageProcessing
 def color_percentage(image, color_spectrum):
     
     
-    hsv_image = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    hsv_image = cv.cvtColor(image, cv.COLOR_BGR2HSV)
 
     # Define the lower and upper bounds of the color spectrum
     lower_bound = np.array(color_spectrum[0], dtype=np.uint8)
     upper_bound = np.array(color_spectrum[1], dtype=np.uint8)
 
     # Create a binary mask for the specified color spectrum
-    mask = cv2.inRange(hsv_image, lower_bound, upper_bound)
+    mask = cv.inRange(hsv_image, lower_bound, upper_bound)
 
     # Calculate the number of pixels that fall within the specified color spectrum
     num_pixels_in_spectrum = np.sum(mask == 255)
@@ -59,8 +59,8 @@ for i in range(1):
     fileList = os.listdir(subFolder)
     imageFiles = [file for file in fileList if file.endswith(('.jpg'))]
     for imageFile in imageFiles:
-        imagePath = os.path.join(folderPath, imageFile)
-        image = cv2.imread(imagePath)
+        imagePath = os.path.join(subFolder, imageFile)
+        image = cv.imread(imagePath, cv.IMREAD_COLOR)
         coords = processedImage.find_coordinates(image)
         print(coords)
         

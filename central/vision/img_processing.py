@@ -4,16 +4,16 @@ import itertools
 
 
 class ImageProcessing:
-    def __init__(self, img):
+    def __init__(self):
         # self.img=cv.imread("/Users/yab/Desktop/projects/yolo/corner/contours.jpeg")
-        self.img1=img
-        self.img = self.add_margin()
-        self.gray = cv.cvtColor(self.img, cv.COLOR_RGB2GRAY)
+        pass
     
-    def add_margin(self):
-        borderoutput = cv.copyMakeBorder(self.img1, 20, 20, 20, 20, cv.BORDER_CONSTANT, value=(255, 255, 255))
+    def add_margin(self, image):
+        borderoutput = cv.copyMakeBorder(image, 20, 20, 20, 20, cv.BORDER_CONSTANT, value=(255, 255, 255))
         return borderoutput
-    def find_intersections(self, lines, image):
+    
+    
+    def find_intersections(self, lines, grayImg):
         new_lines_v = []
         new_lines_h = []
         for line in lines:
@@ -27,12 +27,13 @@ class ImageProcessing:
             elif (m>35): # Vertical
                 new_lines_v.append((x1+x2)/2)
             else:
-                cv.line(image, (x1,y1), (x2,y2), (255,100,50), 1)
+                cv.line(grayImg, (x1,y1), (x2,y2), (255,100,50), 1)
         pts = []
         for hline in new_lines_h:
             for vline in new_lines_v:
                 pts.append([hline, vline])
-        return pts, image
+        return pts, grayImg
+    
     
     def dist(self, i,p): # finds distance between pts, kinda
         res = (abs(i[0]-p[0]) + abs(i[1]-p[1]))
@@ -48,17 +49,19 @@ class ImageProcessing:
                 out.append(list[i])
         return out
     
-    def find_edges(self):
-        edges = cv.Canny(self.gray, 100, 150)
+    def find_edges(self, grayImg):
+        edges = cv.Canny(grayImg, 100, 150)
         return edges
     
-    def find_lines(self):
-        edges=self.find_edges()
+    
+    def find_lines(self, grayImg):
+        edges=self.find_edges(grayImg)
         lines = cv.HoughLinesP(edges, 1, np.pi/180, 60, minLineLength=40, maxLineGap=70)
         return lines
     
-    def find_contour(self): # detect contours
-        ret, thresh = cv.threshold(self.gray, 125, 255, 0)
+    
+    def find_contour(self, grayImg): # detect contours
+        ret, thresh = cv.threshold(grayImg, 125, 255, 0)
         contours, hierarchy = cv.findContours(thresh, cv.RETR_TREE, cv.CHAIN_APPROX_SIMPLE)
         dic={}
         for i in range (len(contours)):
@@ -67,9 +70,12 @@ class ImageProcessing:
         a=sorted(dic.items())
         cv.drawContours(self.img, [a[-1][1]], 0, (0, 0, 255), 23)
          
-    def find_coordinates(self):
-        lines=self.find_lines()
-        pts, image = self.find_intersections(lines, self.gray)
+         
+    def find_coordinates(self, image):
+        img = self.add_margin(image)
+        grayImg = cv.cvtColor(img, cv.COLOR_RGB2GRAY)
+        lines=self.find_lines(grayImg)
+        pts, image = self.find_intersections(lines, grayImg)
         pts = self.remove_duplicates(pts)
         pts.sort()
         pts=list(pts for pts,_ in itertools.groupby(pts))
@@ -87,13 +93,14 @@ class ImageProcessing:
         
         return ptsOrder
     
-    def showBoardStatus(self):
-        coords=self.find_coordinates()
+    def showBoardStatus(self, image):
+        img = self.add_margin(image)
+        coords=self.find_coordinates(image)
         for row in coords:
             for pt in row:
-                cv.circle(self.img, (int(pt[1]), int(pt[0])), 3, (0,255,0), 3)
+                cv.circle(img, (int(pt[1]), int(pt[0])), 3, (0,255,0), 3)
             
-        cv.imshow('image', self.img)
+        cv.imshow('image', img)
         k = cv.waitKey(0)
         cv.destroyAllWindows()
     
@@ -101,8 +108,8 @@ class ImageProcessing:
     #     imageCopy = self.img.copy()
     #     return imageCopy
         
-img=cv.imread("/Users/yab/Desktop/projects/yolo/corner/1481228945.jpg")
-x=ImageProcessing(img)
-y=x.find_coordinates()
-x.showBoardStatus()
+# img=cv.imread("/Users/yab/Desktop/projects/yolo/corner/1481228945.jpg")
+# x=ImageProcessing()
+# y=x.find_coordinates(img)
+# x.showBoardStatus(img)
 # print(y)
