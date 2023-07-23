@@ -12,7 +12,7 @@ class CreateDataset:
 
 
     def dataset(self):
-        extraColor = ExtractColor()
+        extractColor = ExtractColor()
         processedImage=ImageProcessing()
         features, classes= [], []
         folderPath = "/Users/yab/Desktop/projects/AI-Chess-Robot/raw/1"
@@ -32,21 +32,18 @@ class CreateDataset:
                 
                 
                 for i in range(len(coords)):
-                    croppedImage = extraColor.crop_image(paddedImage, coords[i])
+                    croppedImage = extractColor.crop_image(paddedImage, coords[i])
                     # cv.imshow('Cropped Image', croppedImage)
                     # cv.waitKey(2000)
                     # cv.destroyAllWindows()
-                    orangePercent, greenPercent, neitherPercent = extraColor.detect_color(croppedImage)
+                    orangePercent, greenPercent, neitherPercent = extractColor.detect_color(croppedImage)
                     features.append([orangePercent, greenPercent, neitherPercent])
                     catagory = boardState[i]
                     classes.append(catagory)
-                    
+                break
+            break    
         return features, classes
 
 
-# image_path = "/Users/yab/Desktop/projects/yolo/corner/check6.jpg"
-# image = cv2.imread(image_path)
-# orange_percent, green_percent, neither_percent = detect_color(image)
-# print("Orange percentage:", orange_percent)
-# print("Green percentage:", green_percent)
-# print("Neither (Other) percentage:", neither_percent)
+
+

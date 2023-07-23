@@ -57,7 +57,7 @@ class ExtractColor:
 
         # Get the bounding rectangle of the region defined by the points
         x, y, w, h = cv.boundingRect(pts)
-
+            
         # Crop the image using the bounding rectangle
         cropped_img = image[y:y+h, x:x+w]
 
