@@ -34,10 +34,10 @@ class BoardSquares:
         files=["a","b","c","d","e","f","g","h"]  
         ranks=["1","2","3","4","5","6","7","8"]
         fileAndRank=[]
-        for i in range(8):
+        for i in range(7, -1, -1):
             temp=[]
-            for j in range(7, -1, -1):
-                temp.append(files[i]+ranks[j])
+            for j in range(8):
+                temp.append(files[j]+ranks[i])
             fileAndRank.append(temp)
         
         return fileAndRank
@@ -86,6 +86,6 @@ class BoardSquares:
         return boardStateList
                     
 # x=BoardSquares()
-# # y=x.squaresToCoordsMap()
+# y=x.fileAndRank()
 # y=x.readFen("/Users/yab/Desktop/projects/AI-Chess-Robot/raw/1/0/board.fen")
 # print(y)

@@ -18,9 +18,9 @@ class GameState:
         self.boardSquares = BoardSquares()
         
     def recentHumanMove(self, board):      #use the extracted board status and return the most recent human move
-        currBoardStatus = self.extractBoardStatus()
-        recentMoveSan = self.findMove(board, currBoardStatus).strip()
-        recentMove = chess.Move.from_uci(recentMoveSan)
+        currBoardStatusList = self.extractBoardStatus()
+        recentMove = self.findMove(board, currBoardStatusList)
+        
         return recentMove
 
     
@@ -34,21 +34,23 @@ class GameState:
             orangePercent, greenPercent, neitherPercent = self.extractColor.detect_color(croppedImage)
             features.append([orangePercent, greenPercent, neitherPercent])
         
-        boardStatus = self.classify.predictState(features)
+        currBoardStatusList = self.classify.predictState(features)
+        return currBoardStatusList
     
-    def findMove(self, prevBoardStatus, currBoardStatus):
+    def findMove(self, prevBoardStatus, currBoardStatusList):
         prevBoardStatusList = self.chessBoardToList(prevBoardStatus)
         n = len(prevBoardStatusList)
         for i in range(n):
-            if prevBoardStatusList[i] != currBoardStatus[i]:
-                if currBoardStatus[i] == 0:
+            if prevBoardStatusList[i] != currBoardStatusList[i]:
+                if currBoardStatusList[i] == 0:
                     originSquareIndex = i
                 else:
                     destinationSquareIndex = i
         originSquare = self.getSquareNameByIndex(originSquareIndex)
         destinationSquare = self.getSquareNameByIndex(destinationSquareIndex)
-        move = originSquare + destinationSquare
-        return move
+        recentMoveSan = originSquare + destinationSquare
+        recentMove = chess.Move.from_uci(recentMoveSan)
+        return recentMove
 
     def chessBoardToList(self, board):
         boardListNum = []
@@ -84,7 +86,7 @@ class GameState:
        
 gameState = GameState()
 board=chess.Board()
-currList = [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+currList = [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
 recentMove = gameState.findMove(board, currList)
-# board.push(recentMove)
+board.push(recentMove)
 print(recentMove)
