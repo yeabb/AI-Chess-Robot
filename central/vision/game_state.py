@@ -19,8 +19,9 @@ class GameState:
         
     def recentHumanMove(self, board):      #use the extracted board status and return the most recent human move
         currBoardStatus = self.extractBoardStatus()
-        recent_move = self.findMove(board, currBoardStatus)
-        return recent_move
+        recentMoveSan = self.findMove(board, currBoardStatus).strip()
+        recentMove = chess.Move.from_uci(recentMoveSan)
+        return recentMove
 
     
     def extractBoardStatus(self):    #Get the current status of the board
@@ -33,13 +34,13 @@ class GameState:
             orangePercent, greenPercent, neitherPercent = self.extractColor.detect_color(croppedImage)
             features.append([orangePercent, greenPercent, neitherPercent])
         
-        boardStatus = self.classify.predicState(features)
+        boardStatus = self.classify.predictState(features)
     
     def findMove(self, prevBoardStatus, currBoardStatus):
         prevBoardStatusList = self.chessBoardToList(prevBoardStatus)
-        n = len(prevBoardStatus)
+        n = len(prevBoardStatusList)
         for i in range(n):
-            if prevBoardStatus[i] != currBoardStatus[i]:
+            if prevBoardStatusList[i] != currBoardStatus[i]:
                 if currBoardStatus[i] == 0:
                     originSquareIndex = i
                 else:
@@ -51,8 +52,8 @@ class GameState:
 
     def chessBoardToList(self, board):
         boardListNum = []
-        for rank in chess.RANKS[::-1]:  # Loop through ranks in reverse order (from 8 to 1)
-            for file in chess.FILES:  # Loop through files (from 'a' to 'h')
+        for rank in range(7, -1, -1):  # Loop through ranks in reverse order (from 8 to 1)
+            for file in range(0, 8):  # Loop through files (from 'a' to 'h')
                 square = chess.square(file, rank)
                 piece = board.piece_at(square)
                 if piece is None:
@@ -77,3 +78,13 @@ class GameState:
         colIndex = index % numColumns
         
         return fileAndRank[rowIndex][colIndex]
+    
+
+# while not board.is_game_over():
+       
+gameState = GameState()
+board=chess.Board()
+currList = [1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+recentMove = gameState.findMove(board, currList)
+# board.push(recentMove)
+print(recentMove)

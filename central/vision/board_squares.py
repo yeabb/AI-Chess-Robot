@@ -78,9 +78,9 @@ class BoardSquares:
                     
                 else:
                     if square.islower():
-                        boardStateList.append(1)  #1 is green
+                        boardStateList.append(1)  #1 is green (if lower case)
                     else:
-                        boardStateList.append(2)  #2 is orange
+                        boardStateList.append(2)  #2 is orange (if upper case)
 
                         
         return boardStateList

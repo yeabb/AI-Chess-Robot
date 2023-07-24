@@ -4,7 +4,7 @@ import numpy as np
 class Classify:
     def __init__(self):
         pass
-    def predicState(self, X):
+    def predictState(self, X):
 
         # Load the saved SVM model from the file
         loaded_svm_model = joblib.load('svm_model.pkl')
