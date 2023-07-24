@@ -1,5 +1,6 @@
 {
     "python.analysis.extraPaths": [
-        "./central/vision"
+        "./central/vision",
+        "./central/data"
     ]
 }

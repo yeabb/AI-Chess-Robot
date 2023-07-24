@@ -12,7 +12,7 @@ def main():
         game_state=GameState()
         
         #Human makes move
-        human_move=game_state.recent_humanMove()
+        human_move=game_state.recentHumanMove(board)
         human_player=HumanPlayer()
         human_player.make_move(board, human_move)
         
