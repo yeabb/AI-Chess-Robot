@@ -39,9 +39,8 @@ class CreateDataset:
                     orangePercent, greenPercent, neitherPercent = extractColor.detect_color(croppedImage)
                     features.append([orangePercent, greenPercent, neitherPercent])
                     catagory = boardState[i]
-                    classes.append(catagory)
-                break
-            break    
+                    classes.append(catagory)    
+                
         return features, classes
 
 

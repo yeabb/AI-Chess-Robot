@@ -5,5 +5,5 @@ class HumanPlayer:
         pass
     
     def make_move(self, board, humanMove):
-        board.push_san(humanMove)
+        board.push(humanMove)
         print(board)

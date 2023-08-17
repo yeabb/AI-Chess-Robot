@@ -6,17 +6,20 @@ from central.logic.ai_player import StockfishPlayer
 from central.vision.game_state import GameState
 
 
+
 def main():
     board=chess.Board()
+    
     while not board.is_game_over():
-        game_state=GameState()
+        game_state = GameState()
         
-        #Human makes move
-        human_move=game_state.recentHumanMove(board)
-        human_player=HumanPlayer()
+        #Human makes a move
+        human_move = game_state.recentHumanMove(board)
+        human_player = HumanPlayer()
         human_player.make_move(board, human_move)
         
         #AI makes a move
-        ai_player=StockfishPlayer()
+        ai_player = StockfishPlayer()
         ai_player.make_move(board)
+  
 main()

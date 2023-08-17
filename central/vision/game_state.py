@@ -37,6 +37,7 @@ class GameState:
         currBoardStatusList = self.classify.predictState(features)
         return currBoardStatusList
     
+    
     def findMove(self, prevBoardStatus, currBoardStatusList):
         prevBoardStatusList = self.chessBoardToList(prevBoardStatus)
         n = len(prevBoardStatusList)
@@ -51,6 +52,7 @@ class GameState:
         recentMoveSan = originSquare + destinationSquare
         recentMove = chess.Move.from_uci(recentMoveSan)
         return recentMove
+
 
     def chessBoardToList(self, board):
         boardListNum = []
@@ -71,6 +73,7 @@ class GameState:
             
         return boardListNum
             
+            
     def getSquareNameByIndex(self, index):
         fileAndRank = self.boardSquares.fileAndRank()
         numRows = len(fileAndRank)
@@ -82,11 +85,12 @@ class GameState:
         return fileAndRank[rowIndex][colIndex]
     
 
+
 # while not board.is_game_over():
        
-gameState = GameState()
-board=chess.Board()
-currList = [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
-recentMove = gameState.findMove(board, currList)
-board.push(recentMove)
-print(recentMove)
+# gameState = GameState()
+# board=chess.Board()
+# currList = [1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2]
+# recentMove = gameState.findMove(board, currList)
+# board.push(recentMove)
+# print(recentMove)
